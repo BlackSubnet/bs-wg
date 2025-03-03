@@ -4,6 +4,16 @@ import datetime
 from contextlib import contextmanager
 from config import DATABASE_PATH
 import subprocess
+from config import (
+    PUBLIC_IP,
+    WG_PORT,
+    WG_INTERFACE,
+    WG_CONFIG_PATH,
+    WG_SUBNET,
+    WG_DNS,
+    WG_MTU,
+    WG_PERSISTENT_KEEPALIVE
+)
 
 
 def generate_keypair():
