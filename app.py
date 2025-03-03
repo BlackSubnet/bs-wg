@@ -156,14 +156,15 @@ def server_config_api():
     config = get_server_config()
     if config:
         return jsonify(config)
+    
+    # Use values imported from config module
     return jsonify({
-        'endpoint': '198.51.100.1:51820',
-        'subnet': '10.8.0.0/24',
-        'dns_servers': '1.1.1.1, 1.0.0.1',
-        'mtu': 1420,
-        'keepalive': 25
+        'endpoint': f"{PUBLIC_IP}:{WG_PORT}",
+        'subnet': '10.8.0.0/24',  # You might want to import this from config too
+        'dns_servers': '1.1.1.1, 1.0.0.1',  # Consider importing this
+        'mtu': 1420,  # Consider importing this
+        'keepalive': 25  # Consider importing this
     })
-
 
 @app.route('/clients/add', methods=['GET', 'POST'])
 @login_required
