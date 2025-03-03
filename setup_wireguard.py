@@ -7,10 +7,21 @@ from config import (
 )
 from database import init_db, get_server_config
 
+def remove_existing_wg():
+    """Remove existing WireGuard interface if it exists."""
+    result = subprocess.run(['wg', 'show', WG_INTERFACE], capture_output=True, text=True)
+    if result.returncode == 0:
+        print(f"WireGuard interface {WG_INTERFACE} exists. Removing it...")
+        subprocess.run(['wg-quick', 'down', WG_INTERFACE])
+        subprocess.run(['systemctl', 'disable', f'wg-quick@{WG_INTERFACE}'])
+
 def init_server():
     # Initialize database
     init_db()
     
+    # Remove existing WireGuard interface if it exists
+    remove_existing_wg()
+
     # Get or create server config
     server_config = get_server_config()
     
