@@ -1,7 +1,7 @@
 import os
 
 # WireGuard Configuration
-PUBLIC_IP = "109.248.162.201"  # Replace with your actual public IP
+PUBLIC_IP = ""  # Replace with your actual public IP
 WG_PORT = 51820
 WG_CONFIG_PATH = '/etc/wireguard/wg0.conf'
 WG_INTERFACE = 'wg0'
