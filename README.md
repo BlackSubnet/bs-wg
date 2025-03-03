@@ -1,134 +1,143 @@
-# BlackSubnet WireGuard Panel (bs-wg)
-<img src="https://i.ibb.co/GvmXK9rk/photo-2025-02-05-00-42-17.jpg" alt="BlackSubnet WireGuard Panel Logo" width="100" height="100">
+# 🌐 BlackSubnet WireGuard Panel (bs-wg)
 
+<div align="center">
+  <img src="https://i.ibb.co/GvmXK9rk/photo-2025-02-05-00-42-17.jpg" alt="BlackSubnet WireGuard Panel Logo" width="150">
+  
+  **Modern, Powerful & User-Friendly WireGuard VPN Management**
+  
+  [![MIT License](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
+  [![Python 3.9+](https://img.shields.io/badge/Python-3.9+-green.svg)](https://www.python.org/downloads/)
+  [![WireGuard](https://img.shields.io/badge/WireGuard-Compatible-orange.svg)](https://www.wireguard.com/)
+</div>
 
-Welcome to bs-wg, a powerful and user-friendly WireGuard VPN management panel developed by BlackSubnet. This tool simplifies the setup, configuration, and management of WireGuard VPN servers, offering an intuitive interface for administrators and users alike. Whether you're securing your network, managing remote access, or deploying VPNs at scale, bs-wg has you covered.
+## ✨ Overview
 
-## Table of Contents
+Welcome to **bs-wg**, a powerful and elegant WireGuard VPN management panel developed by BlackSubnet. This tool transforms the complexity of VPN management into a seamless experience, offering an intuitive interface for administrators and users alike. Whether you're securing your network, managing remote access, or deploying VPNs at scale, bs-wg delivers simplicity without compromising on features.
 
-- [Features](#features)
-- [Screenshots](#screenshots)
-- [Installation](#installation)
-- [Usage](#usage)
-- [Contributing](#contributing)
-- [License](#license)
-- [Contact](#contact)
+## 🚀 Features
 
-## Features
+- **🔄 Effortless WireGuard Management** — Create, edit, and delete WireGuard peers with just a few clicks
+- **🖥️ Sleek Web Interface** — Manage your VPN server from any browser, no command-line needed
+- **🔐 Robust Authentication** — Secure access with comprehensive user management
+- **📊 Live Monitoring** — Track connections and performance in real-time
+- **💻 Cross-Platform** — Compatible with all Linux-based systems running WireGuard
+- **⚙️ Highly Customizable** — Fine-tune every aspect of your VPN configuration
+- **📈 Enterprise Ready** — Scales from personal use to large organizational deployments
 
-- Easy WireGuard Management: Seamlessly create, edit, and delete WireGuard peers and configurations.
-- Web-Based Interface: Manage your VPN server from any browser without complex command-line interactions.
-- User Authentication: Secure access with built-in user management and authentication.
-- Real-Time Monitoring: Track VPN connection statuses and performance metrics.
-- Cross-Platform Support: Compatible with Linux-based systems running WireGuard.
-- Customizable Settings: Fine-tune VPN configurations to suit your needs.
-- Scalable Design: Ideal for small setups or large-scale deployments.
+## 📸 Screenshots
 
-## Screenshots
+<div align="center">
+  <table>
+    <tr>
+      <td align="center">
+        <img src="https://i.ibb.co/219CmSjR/photo-2025-03-03-21-46-20.jpg" alt="Dashboard" width="100%">
+        <br><strong>Dashboard Overview</strong>
+        <br><em>Complete visibility into your VPN operations</em>
+      </td>
+    </tr>
+    <tr>
+      <td align="center">
+        <img src="https://i.ibb.co/XNG68Kv/photo-2025-03-03-21-46-55.jpg" alt="Peer Management" width="100%">
+        <br><strong>Peer Management</strong>
+        <br><em>Intuitive peer configuration and control</em>
+      </td>
+    </tr>
+    <tr>
+      <td align="center">
+        <img src="https://i.ibb.co/ymbXGq1Z/photo-2025-03-03-21-46-27.jpg" alt="Traffic Monitor" width="100%">
+        <br><strong>Traffic Monitoring</strong>
+        <br><em>Visualize network activity in real-time</em>
+      </td>
+    </tr>
+  </table>
+</div>
 
-### Dashboard Overview
-![Dashboard Screenshot](https://i.ibb.co/219CmSjR/photo-2025-03-03-21-46-20.jpg)
-View real-time stats and manage your VPN with ease.
-
-### Peer Management
-![Peer Management](https://i.ibb.co/XNG68Kv/photo-2025-03-03-21-46-55.jpg)
-Add, edit, or remove WireGuard peers effortlessly.
-
-### Traffic Monitor
-![Traffic Monitor](https://i.ibb.co/ymbXGq1Z/photo-2025-03-03-21-46-27.jpg)
-Monitor your WireGuard traffic with a clean UI.
-
-## Installation
-
-Follow these steps to get the BlackSubnet WireGuard Panel up and running:
+## 🛠️ Installation
 
 ### Prerequisites
-- A Linux server (Ubuntu LTS preffered)
+- Linux server (Ubuntu LTS recommended)
 - WireGuard installed (wg and wg-quick)
 - Root or sudo privileges
-- Python 3.9+ (if applicable, adjust based on project dependencies)
+- Python 3.9+
 - Git
 
-# BlackSubnet WireGuard Panel Installation Guide
+### Quick Setup Guide
 
-## Step 1: Clone the Repository
+#### 1️⃣ Clone the Repository
 ```bash
 git clone https://github.com/BlackSubnet/bs-wg.git
 cd bs-wg
 ```
 
-## Step 2: Install Dependencies
+#### 2️⃣ Install Dependencies
 ```bash
 sudo apt update
 sudo apt install wireguard python3-pip
 pip3 install -r requirements.txt
 ```
 
-## Step 3: Configure the Panel
-Edit the configuration file `config.py` with your server details:
+#### 3️⃣ Configure the Panel
+Edit `config.py` with your server details:
 ```python
 PUBLIC_IP = "YOUR_SERVER_IP"  # Replace with your actual public IP
 SECRET_KEY = 'your-secret-key-here'
 ADMIN_PASSWORD = "PASSWORD"  # Change this to a secure random value
 ```
 
-## Step 4: Set Up WireGuard
+#### 4️⃣ Set Up WireGuard
 ```bash
 python3 setup_wireguard.py
 ```
 
-## Step 5: Run the Application
+#### 5️⃣ Launch the Application
 ```bash
 python3 app.py
 ```
+> 💡 **Pro Tip:** For production environments, set up as a systemd service for reliability.
 
-Alternatively, set it up as a systemd service for persistence.
-
-## Step 6: Access the Panel
+#### 6️⃣ Access Your Panel
 Open your browser and navigate to:
 ```
 http://your-server-ip:5000
 ```
 
-## Usage
+## 📝 Usage Guide
 
-1. Log In
-   - Use the default credentials (PASSWORD) or set up your own during installation.
-   - Change the password immediately for security.
+### Getting Started
 
-2. Create a Peer
-   - Navigate to the "Peers" section.
-   - Click "Add Peer," configure the settings, and download the client config.
+1. **Login** — Use your configured credentials (change default password immediately)
+2. **Create Peers** — Navigate to "Peers" → "Add Peer" → Configure and download client config
+3. **Monitor** — View active connections and performance metrics on the dashboard
+4. **Configure** — Fine-tune WireGuard settings through the intuitive configuration editor
 
-3. Monitor Connections
-   - Check the dashboard for active connections and logs.
+## 👥 Contributing
 
-4. Manage Configurations
-   - Adjust WireGuard settings via the configuration editor as needed.
+We welcome contributions from the community! Here's how to get started:
 
+1. Fork the repository
+2. Create your feature branch: `git checkout -b feature/amazing-feature`
+3. Commit your changes: `git commit -m 'Add some amazing feature'`
+4. Push to the branch: `git push origin feature/amazing-feature`
+5. Open a Pull Request
 
+## 📜 License
 
-## Contributing
+This project is licensed under the [MIT License](LICENSE) - see the LICENSE file for details.
 
-We welcome contributions from the community! To get started:
+## 📬 Contact & Support
 
-1. Fork the repository.
-2. Create a new branch (git checkout -b feature/your-feature).
-3. Commit your changes (git commit -m "Add your feature").
-4. Push to your branch (git push origin feature/your-feature).
-5. Open a Pull Request.
-
-## License
-
-This project is licensed under the [MIT License](LICENSE). See the LICENSE file for details.
-
-## Contact
-
-For support or inquiries, reach out to the BlackSubnet team:
-
-- Email: support@blacksubnet.vip
-- GitHub Issues: [Open an Issue](https://github.com/BlackSubnet/bs-wg/issues)
-- Website: [blacksubnet.vip](https://blacksubnet.vip)
+<div align="center">
+  
+  Need help? Have questions? Get in touch with the BlackSubnet team:
+  
+  📧 **Email:** [support@blacksubnet.vip](mailto:support@blacksubnet.vip)  
+  🐛 **Issues:** [Report on GitHub](https://github.com/BlackSubnet/bs-wg/issues)  
+  🌐 **Website:** [blacksubnet.vip](https://blacksubnet.vip)
+</div>
 
 ---
-Built with love by BlackSubnet. Secure your network today!
+
+<div align="center">
+  <b>Built with ❤️ by BlackSubnet</b><br>
+  <i>Secure your network with confidence</i>
+</div>
