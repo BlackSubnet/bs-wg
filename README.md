@@ -49,31 +49,46 @@ Follow these steps to get the BlackSubnet WireGuard Panel up and running:
 - Python 3.9+ (if applicable, adjust based on project dependencies)
 - Git
 
-### Steps
-1. Clone the Repository
-   git clone https://github.com/BlackSubnet/bs-wg.git
-   cd bs-wg
+# BlackSubnet WireGuard Panel Installation Guide
 
-2. Install Dependencies
-   sudo apt update
-   sudo apt install wireguard python3-pip
-   pip3 install -r requirements.txt
+## Step 1: Clone the Repository
+```bash
+git clone https://github.com/BlackSubnet/bs-wg.git
+cd bs-wg
+```
 
-3. Configure the Panel
-   - Edit the configuration file (config.py) with your server details.
-   - Example:
-    PUBLIC_IP = ""  # Replace with your actual public IP
-  
-    SECRET_KEY = 'your-secret-key-here' 
-    ADMIN_PASSWORD = "PASSWORD" # Change this to a secure random value
+## Step 2: Install Dependencies
+```bash
+sudo apt update
+sudo apt install wireguard python3-pip
+pip3 install -r requirements.txt
+```
 
-4. Run the Application
-   python3 main.py
-   - Alternatively, set it up as a systemd service for persistence.
+## Step 3: Configure the Panel
+Edit the configuration file `config.py` with your server details:
+```python
+PUBLIC_IP = "YOUR_SERVER_IP"  # Replace with your actual public IP
+SECRET_KEY = 'your-secret-key-here'
+ADMIN_PASSWORD = "PASSWORD"  # Change this to a secure random value
+```
 
-5. Access the Panel
-   - Open your browser and navigate to http://your-server-ip:5000.
+## Step 4: Set Up WireGuard
+```bash
+python3 setup_wireguard.py
+```
 
+## Step 5: Run the Application
+```bash
+python3 app.py
+```
+
+Alternatively, set it up as a systemd service for persistence.
+
+## Step 6: Access the Panel
+Open your browser and navigate to:
+```
+http://your-server-ip:5000
+```
 
 ## Usage
 
