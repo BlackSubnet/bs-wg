@@ -1,6 +1,6 @@
 # BlackSubnet WireGuard Panel (bs-wg)
+<img src="https://i.ibb.co/GvmXK9rk/photo-2025-02-05-00-42-17.jpg" alt="BlackSubnet WireGuard Panel Logo" width="100" height="100">
 
-![BlackSubnet WireGuard Panel Logo](https://i.ibb.co/GvmXK9rk/photo-2025-02-05-00-42-17.jpg)
 
 Welcome to bs-wg, a powerful and user-friendly WireGuard VPN management panel developed by BlackSubnet. This tool simplifies the setup, configuration, and management of WireGuard VPN servers, offering an intuitive interface for administrators and users alike. Whether you're securing your network, managing remote access, or deploying VPNs at scale, bs-wg has you covered.
 
