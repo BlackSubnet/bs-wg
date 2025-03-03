@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BS-WG Admin Panel - Add Client</title>
+    <style>
+        /* Theme Variables */
+        html[data-theme="dark"] {
+            --bg-primary: #111111;
+            --bg-secondary: #1a1a1a;
+            --bg-tertiary: #222222;
+            --text-primary: #f5f5f5;
+            --text-secondary: #cccccc;
+            --border-color: #333333;
+            --accent-color: #444444;
+            --success: #388e3c;
+            --danger: #d32f2f;
+            --warning: #f57c00;
+            --info: #0288d1;
+            --shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+            --hover-bg: rgba(255, 255, 255, 0.05);
+        }
+        
+        html[data-theme="light"] {
+            --bg-primary: #ffffff;
+            --bg-secondary: #f5f5f5;
+            --bg-tertiary: #e8e8e8;
+            --text-primary: #222222;
+            --text-secondary: #555555;
+            --border-color: #dddddd;
+            --accent-color: #eeeeee;
+            --success: #4caf50;
+            --danger: #f44336;
+            --warning: #ff9800;
+            --info: #2196f3;
+            --shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            --hover-bg: rgba(0, 0, 0, 0.05);
+        }
+        
+        /* Reset & Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            transition: background-color 0.3s, color 0.3s;
+        }
+        
+        /* Layout */
+        .container {
+            display: flex;
+            min-height: 100vh;
+        }
+        
+        .sidebar {
+            width: 250px;
+            background-color: var(--bg-secondary);
+            padding: 30px 0;
+            border-right: 1px solid var(--border-color);
+            box-shadow: var(--shadow);
+            z-index: 10;
+            transition: all 0.3s ease;
+        }
+        
+        .main-content {
+            flex: 1;
+            padding: 30px;
+            overflow-y: auto;
+        }
+        
+        /* Navigation */
+        .nav-menu {
+            list-style: none;
+            padding: 20px 0;
+        }
+        
+        .nav-item {
+            margin-bottom: 5px;
+        }
+        
+        .nav-link {
+            display: flex;
+            align-items: center;
+            padding: 12px 25px;
+            color: var(--text-primary);
+            text-decoration: none;
+            transition: all 0.2s ease;
+            border-radius: 0 20px 20px 0;
+            margin-right: 20px;
+        }
+        
+        .nav-link:hover {
+            background-color: var(--hover-bg);
+        }
+        
+        .nav-link.active {
+            background-color: var(--hover-bg);
+            border-left: 4px solid var(--info);
+            font-weight: 500;
+        }
+        
+        /* Brand */
+        .brand {
+            padding: 0 25px 20px;
+            border-bottom: 1px solid var(--border-color);
+            margin-bottom: 20px;
+        }
+        
+        .brand-title {
+            font-size: 20px;
+            font-weight: 600;
+            letter-spacing: 1px;
+        }
+        
+        /* Theme Toggle */
+        .theme-toggle {
+            padding: 0 25px;
+            margin-top: 20px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .toggle-switch {
+            position: relative;
+            display: inline-block;
+            width: 50px;
+            height: 24px;
+            margin-left: 10px;
+        }
+        
+        .toggle-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+        
+        .toggle-slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: var(--accent-color);
+            transition: .4s;
+            border-radius: 24px;
+        }
+        
+        .toggle-slider:before {
+            position: absolute;
+            content: "";
+            height: 18px;
+            width: 18px;
+            left: 3px;
+            bottom: 3px;
+            background-color: var(--text-primary);
+            transition: .4s;
+            border-radius: 50%;
+        }
+        
+        input:checked + .toggle-slider {
+            background-color: var(--info);
+        }
+        
+        input:checked + .toggle-slider:before {
+            transform: translateX(26px);
+        }
+        
+        /* Header */
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid var(--border-color);
+        }
+        
+        .heading {
+            font-size: 24px;
+            font-weight: 600;
+        }
+        
+        /* Buttons */
+        .btn {
+            background-color: var(--accent-color);
+            color: var(--text-primary);
+            border: none;
+            padding: 10px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-size: 14px;
+            font-weight: 500;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            text-decoration: none;
+        }
+        
+        .btn:hover {
+            background-color: var(--hover-bg);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+        }
+        
+        .btn-success {
+            background-color: var(--success);
+        }
+        
+        .btn-danger {
+            background-color: var(--danger);
+        }
+        
+        /* Card */
+        .card {
+            background-color: var(--bg-secondary);
+            border-radius: 10px;
+            padding: 25px;
+            margin-bottom: 25px;
+            box-shadow: var(--shadow);
+            transition: box-shadow 0.2s ease, transform 0.2s ease;
+            border: 1px solid var(--border-color);
+        }
+        
+        .card:hover {
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+        }
+        
+        .card-title {
+            font-size: 18px;
+            margin-bottom: 20px;
+            font-weight: 600;
+            position: relative;
+            padding-bottom: 10px;
+        }
+        
+        .card-title:after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 40px;
+            height: 3px;
+            background-color: var(--info);
+            border-radius: 3px;
+        }
+        
+        /* Form Elements */
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: var(--text-secondary);
+        }
+        
+        input, select, textarea {
+            width: 100%;
+            padding: 12px 15px;
+            border-radius: 6px;
+            border: 1px solid var(--border-color);
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            font-size: 14px;
+            transition: all 0.2s ease;
+        }
+        
+        input:focus, select:focus, textarea:focus {
+            outline: none;
+            border-color: var(--info);
+            box-shadow: 0 0 0 3px rgba(33, 150, 243, 0.2);
+        }
+        
+        /* Form Layout */
+        .form-row {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .form-col {
+            flex: 1;
+            min-width: 0;
+        }
+        
+        /* Flash Messages */
+        .flash-messages {
+            margin-bottom: 20px;
+        }
+        
+        .flash-message {
+            padding: 12px 20px;
+            margin-bottom: 10px;
+            border-radius: 6px;
+            animation: slideIn 0.3s ease;
+        }
+        
+        .flash-message.success {
+            background-color: var(--success);
+            color: white;
+        }
+        
+        .flash-message.error {
+            background-color: var(--danger);
+            color: white;
+        }
+        
+        @keyframes slideIn {
+            from { transform: translateY(-20px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+        
+        /* Form Helpers */
+        .help-text {
+            font-size: 12px;
+            color: var(--text-secondary);
+            margin-top: 5px;
+        }
+        
+        /* Footer */
+        .footer {
+            margin-top: 40px;
+            text-align: center;
+            padding: 20px 0;
+            color: var(--text-secondary);
+            font-size: 14px;
+            border-top: 1px solid var(--border-color);
+        }
+        
+        /* Responsive Adjustments */
+        @media (max-width: 992px) {
+            .container {
+                flex-direction: column;
+            }
+            
+            .sidebar {
+                width: 100%;
+                border-right: none;
+                border-bottom: 1px solid var(--border-color);
+                padding: 15px 0;
+            }
+            
+            .nav-link {
+                border-radius: 20px;
+                margin: 0 15px;
+            }
+            
+            .main-content {
+                padding: 20px 15px;
+            }
+            
+            .form-row {
+                flex-direction: column;
+                gap: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <aside class="sidebar">
+            <div class="brand">
+                <h2 class="brand-title">BS-WG Admin</h2>
+            </div>
+            
+            <ul class="nav-menu">
+                <li class="nav-item">
+                    <a href="/" class="nav-link">Dashboard</a>
+                </li>
+                <li class="nav-item">
+                    <a href="/clients" class="nav-link active">Clients</a>
+                </li>
+                <li class="nav-item">
+                    <a href="/server-config" class="nav-link">Server Config</a>
+                </li>
+                <li class="nav-item">
+                    <a href="/traffic" class="nav-link">Traffic Monitor</a>
+                </li>
+                <li class="nav-item">
+                    <a href="/logs" class="nav-link">Logs</a>
+                </li>
+                <li class="nav-item">
+                    <a href="/settings" class="nav-link">Settings</a>
+                </li>
+            </ul>
+            
+            <div class="theme-toggle">
+                <span>Dark Mode</span>
+                <label class="toggle-switch">
+                    <input type="checkbox" id="theme-toggle-switch" checked>
+                    <span class="toggle-slider"></span>
+                </label>
+            </div>
+        </aside>
+        
+        <main class="main-content">
+            <div class="header">
+                <h1 class="heading">Add New Client</h1>
+                <a href="/clients" class="btn">Back to Clients</a>
+            </div>
+            
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    <div class="flash-messages">
+                    {% for category, message in messages %}
+                        <div class="flash-message {{ category }}">{{ message }}</div>
+                    {% endfor %}
+                    </div>
+                {% endif %}
+            {% endwith %}
+            
+            <div class="card">
+                <h2 class="card-title">Client Details</h2>
+                <form action="/clients/add" method="POST">
+                    <div class="form-row">
+                        <div class="form-col">
+                            <div class="form-group">
+                                <label for="name">Client Name*</label>
+                                <input type="text" id="name" name="name" placeholder="Enter a unique name for this client" required>
+                                <div class="help-text">Use a descriptive name (e.g., "iPhone_John", "Laptop_Office")</div>
+                            </div>
+                        </div>
+                        <div class="form-col">
+                            <div class="form-group">
+                                <label for="email">Email (optional)</label>
+                                <input type="email" id="email" name="email" placeholder="Client owner's email address">
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="assigned_ip">IP Assignment</label>
+                        <select id="assigned_ip" name="assigned_ip">
+                            <option value="">Auto-assign IP address</option>
+                            {% for ip in available_ips %}
+                                <option value="{{ ip }}">{{ ip }}</option>
+                            {% endfor %}
+                        </select>
+                        <div class="help-text">Leave as "Auto-assign" to automatically select an available IP address</div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-col">
+                            <div class="form-group">
+                                <label for="data_limit">Data Transfer Limit</label>
+                                <select id="data_limit" name="data_limit">
+                                    <option value="none">No Limit</option>
+                                    <option value="50">50 GB</option>
+                                    <option value="100">100 GB</option>
+                                    <option value="250">250 GB</option>
+                                    <option value="500">500 GB</option>
+                                    <option value="1000">1 TB</option>
+                                    <option value="2000">2 TB</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-col">
+                            <div class="form-group">
+                                <label for="expiry_date">Expiry Date (optional)</label>
+                                <input type="date" id="expiry_date" name="expiry_date">
+                                <div class="help-text">Leave blank for no expiration</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div style="margin-top: 20px;">
+                        <button type="submit" class="btn btn-success">Create Client</button>
+                        <a href="/clients" class="btn" style="margin-left: 10px;">Cancel</a>
+                    </div>
+                </form>
+            </div>
+            
+            <div class="footer">
+                Black Subnet WireGuard Admin Panel &copy; 2025
+            </div>
+        </main>
+    </div>
+    
+    <script>
+        // Theme toggle functionality
+        const themeToggle = document.getElementById('theme-toggle-switch');
+        const htmlElement = document.documentElement;
+        
+        // Load theme preference from localStorage
+        document.addEventListener('DOMContentLoaded', function() {
+            const savedTheme = localStorage.getItem('theme');
+            if (savedTheme) {
+                htmlElement.setAttribute('data-theme', savedTheme);
+                themeToggle.checked = savedTheme === 'dark';
+            }
+        });
+        
+        themeToggle.addEventListener('change', function() {
+            if (this.checked) {
+                htmlElement.setAttribute('data-theme', 'dark');
+                localStorage.setItem('theme', 'dark');
+            } else {
+                htmlElement.setAttribute('data-theme', 'light');
+                localStorage.setItem('theme', 'light');
+            }
+        });
+        
+        // Flash message auto-hide
+        document.addEventListener('DOMContentLoaded', function() {
+            const flashMessages = document.querySelectorAll('.flash-message');
+            flashMessages.forEach(message => {
+                setTimeout(() => {
+                    message.style.opacity = '0';
+                    message.style.transform = 'translateY(-10px)';
+                    message.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+                    setTimeout(() => {
+                        message.remove();
+                    }, 500);
+                }, 5000);
+            });
+        });
+    </script>
+</body>
+</html>
