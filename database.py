@@ -68,19 +68,19 @@ def init_db():
         ''')
         
         # Create server_config table
-        conn.execute('''
+        conn.execute(f'''
         CREATE TABLE IF NOT EXISTS server_config (
-            id INTEGER PRIMARY KEY CHECK (id = 1),
-            endpoint TEXT NOT NULL DEFAULT '198.51.100.1:51820',
-            subnet TEXT NOT NULL DEFAULT '10.8.0.0/24',
-            dns_servers TEXT NOT NULL DEFAULT '1.1.1.1, 1.0.0.1',
-            mtu INTEGER NOT NULL DEFAULT 1420,
-            keepalive INTEGER NOT NULL DEFAULT 25,
-            private_key TEXT,
-            public_key TEXT,
-            last_updated TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
-        )
-        ''')
+             id INTEGER PRIMARY KEY CHECK (id = 1),
+             endpoint TEXT NOT NULL DEFAULT '{PUBLIC_IP}:{WG_PORT}',
+             subnet TEXT NOT NULL DEFAULT '{WG_SUBNET}',
+             dns_servers TEXT NOT NULL DEFAULT '{WG_DNS}',
+             mtu INTEGER NOT NULL DEFAULT {WG_MTU},
+             keepalive INTEGER NOT NULL DEFAULT {WG_PERSISTENT_KEEPALIVE},
+             private_key TEXT,
+             public_key TEXT,
+             last_updated TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+              )
+           ''')
         
         # Create traffic_logs table
         conn.execute('''
