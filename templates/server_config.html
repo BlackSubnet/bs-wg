@@ -799,7 +799,7 @@
                     <div class="config-row">
                         <label class="config-label">Server Endpoint</label>
                         <div class="config-value">
-                            <input type="text" class="config-input" id="serverEndpoint" value="198.51.100.1:51820">
+                            <input type="text" class="config-input" id="serverEndpoint">
                             <div class="config-help">Public IP/domain and port for client connections</div>
                         </div>
                     </div>
@@ -807,7 +807,7 @@
                     <div class="config-row">
                         <label class="config-label">Interface IP</label>
                         <div class="config-value">
-                            <input type="text" class="config-input" id="interfaceIP" value="10.8.0.1/24">
+                            <input type="text" class="config-input" id="interfaceIP">
                             <div class="config-help">WireGuard interface IP address and subnet</div>
                         </div>
                     </div>
@@ -815,7 +815,7 @@
                     <div class="config-row">
                         <label class="config-label">DNS Servers</label>
                         <div class="config-value">
-                            <input type="text" class="config-input" id="dnsServers" value="1.1.1.1, 1.0.0.1">
+                            <input type="text" class="config-input" id="dnsServers">
                             <div class="config-help">DNS servers for client configurations</div>
                         </div>
                     </div>
@@ -823,7 +823,7 @@
                     <div class="config-row">
                         <label class="config-label">MTU</label>
                         <div class="config-value">
-                            <input type="number" class="config-input" id="mtu" value="1420">
+                            <input type="number" class="config-input" id="mtu">
                             <div class="config-help">Maximum Transmission Unit size</div>
                         </div>
                     </div>
@@ -836,7 +836,7 @@
                     <div class="config-row">
                         <label class="config-label">Persistent Keepalive</label>
                         <div class="config-value">
-                            <input type="number" class="config-input" id="keepalive" value="25">
+                            <input type="number" class="config-input" id="keepalive">
                             <div class="config-help">Keepalive interval in seconds</div>
                         </div>
                     </div>
@@ -845,7 +845,7 @@
                         <label class="config-label">Allow NAT</label>
                         <div class="config-value">
                             <label class="switch">
-                                <input type="checkbox" id="allowNat" checked>
+                                <input type="checkbox" id="allowNat">
                                 <span class="switch-slider"></span>
                             </label>
                             <div class="config-help">Enable NAT for client internet access</div>
@@ -883,14 +883,7 @@
                         <button class="copy-btn" onclick="copyConfig()">Copy</button>
                     </div>
                     <code id="configOutput">
-[Interface]
-Address = 10.8.0.1/24
-ListenPort = 51820
-PrivateKey = [HIDDEN]
-PostUp = iptables -A FORWARD -i wg0 -j ACCEPT; iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE
-PostDown = iptables -D FORWARD -i wg0 -j ACCEPT; iptables -t nat -D POSTROUTING -o eth0 -j MASQUERADE
-
-# Client configurations will appear here after generation
+Loading configuration...
                     </code>
                 </div>
 
@@ -908,6 +901,68 @@ PostDown = iptables -D FORWARD -i wg0 -j ACCEPT; iptables -t nat -D POSTROUTING 
     </div>
 
     <script>
+        // Load server configuration from API
+        async function loadServerConfig() {
+            try {
+                const response = await fetch('/api/server-config');
+                if (!response.ok) {
+                    throw new Error('Failed to fetch server configuration');
+                }
+                
+                const config = await response.json();
+                
+                // Populate form fields with API data
+                document.getElementById('serverEndpoint').value = config.endpoint || '';
+                document.getElementById('interfaceIP').value = config.subnet ? config.subnet.replace('/24', '.1/24') : '';
+                document.getElementById('dnsServers').value = config.dns_servers || '';
+                document.getElementById('mtu').value = config.mtu || 1420;
+                document.getElementById('keepalive').value = config.keepalive || 25;
+                
+                // Set boolean values if they exist in the response
+                if (config.allow_nat !== undefined) {
+                    document.getElementById('allowNat').checked = config.allow_nat;
+                }
+                if (config.ipv6_support !== undefined) {
+                    document.getElementById('ipv6Support').checked = config.ipv6_support;
+                }
+                
+                // Update the configuration display
+                updateConfigDisplay(config);
+                
+            } catch (error) {
+                console.error('Error loading server configuration:', error);
+                const alert = document.createElement('div');
+                alert.className = 'alert alert-danger';
+                alert.innerHTML = '<i class="fas fa-exclamation-circle"></i> Failed to load server configuration. Please try again.';
+                document.querySelector('.main-content').prepend(alert);
+                
+                // Auto-remove the alert after 5 seconds
+                setTimeout(() => {
+                    if (alert.parentNode) {
+                        alert.parentNode.removeChild(alert);
+                    }
+                }, 5000);
+            }
+        }
+        
+        // Update the configuration display based on form values
+        function updateConfigDisplay(config) {
+            const subnet = config.subnet ? config.subnet : '10.8.0.0/24';
+            const interfaceIP = subnet.replace('0/24', '1/24');
+            const port = config.endpoint ? config.endpoint.split(':')[1] : '51820';
+            
+            const configText = `[Interface]
+Address = ${interfaceIP}
+ListenPort = ${port}
+PrivateKey = [HIDDEN]
+PostUp = iptables -A FORWARD -i wg0 -j ACCEPT; iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE
+PostDown = iptables -D FORWARD -i wg0 -j ACCEPT; iptables -t nat -D POSTROUTING -o eth0 -j MASQUERADE
+
+# Client configurations will appear here after generation`;
+            
+            document.getElementById('configOutput').innerText = configText;
+        }
+
         // Function to copy configuration
         function copyConfig() {
             const configText = document.getElementById('configOutput').innerText;
@@ -943,6 +998,9 @@ PostDown = iptables -D FORWARD -i wg0 -j ACCEPT; iptables -t nat -D POSTROUTING 
                 reader.onload = (event) => {
                     const configText = event.target.result;
                     document.getElementById('configOutput').innerText = configText;
+                    
+                    // TODO: Parse the uploaded config to update form fields
+                    // This would require parsing the WireGuard config format
                 };
                 reader.readAsText(file);
             };
@@ -950,11 +1008,66 @@ PostDown = iptables -D FORWARD -i wg0 -j ACCEPT; iptables -t nat -D POSTROUTING 
         }
 
         // Save configuration button handler
-        document.getElementById('saveConfigBtn').addEventListener('click', function() {
-            // Add your save configuration logic here
-            // This should make an API call to your backend
-            alert('Configuration saved successfully!');
+        document.getElementById('saveConfigBtn').addEventListener('click', async function() {
+            // Collect form values
+            const config = {
+                endpoint: document.getElementById('serverEndpoint').value,
+                subnet: document.getElementById('interfaceIP').value.replace('.1/24', '.0/24'),
+                dns_servers: document.getElementById('dnsServers').value,
+                mtu: parseInt(document.getElementById('mtu').value),
+                keepalive: parseInt(document.getElementById('keepalive').value),
+                allow_nat: document.getElementById('allowNat').checked,
+                ipv6_support: document.getElementById('ipv6Support').checked
+            };
+            
+            try {
+                // Send the updated configuration to the server
+                const response = await fetch('/api/server-config', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(config)
+                });
+                
+                if (!response.ok) {
+                    throw new Error('Failed to save configuration');
+                }
+                
+                // Show success message
+                const alert = document.createElement('div');
+                alert.className = 'alert alert-success';
+                alert.innerHTML = '<i class="fas fa-check-circle"></i> Configuration saved successfully!';
+                document.querySelector('.main-content').prepend(alert);
+                
+                // Update the configuration display
+                updateConfigDisplay(config);
+                
+                // Auto-remove the alert after 3 seconds
+                setTimeout(() => {
+                    if (alert.parentNode) {
+                        alert.parentNode.removeChild(alert);
+                    }
+                }, 3000);
+                
+            } catch (error) {
+                console.error('Error saving configuration:', error);
+                const alert = document.createElement('div');
+                alert.className = 'alert alert-danger';
+                alert.innerHTML = '<i class="fas fa-exclamation-circle"></i> Failed to save configuration. Please try again.';
+                document.querySelector('.main-content').prepend(alert);
+                
+                // Auto-remove the alert after 5 seconds
+                setTimeout(() => {
+                    if (alert.parentNode) {
+                        alert.parentNode.removeChild(alert);
+                    }
+                }, 5000);
+            }
         });
+        
+        // Load configuration when page loads
+        document.addEventListener('DOMContentLoaded', loadServerConfig);
     </script>
 </body>
 </html>
