@@ -129,6 +129,7 @@ This project is licensed under the [MIT License](LICENSE) - see the LICENSE file
 <div align="center">
   
   Need help? Have questions? Get in touch with the BlackSubnet team:
+  This project is still under development and there might be bugs.
   
   📧 **Email:** [support@blacksubnet.vip](mailto:support@blacksubnet.vip)  
   🐛 **Issues:** [Report on GitHub](https://github.com/BlackSubnet/bs-wg/issues)  
